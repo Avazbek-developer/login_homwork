@@ -1,4 +1,6 @@
 import os
+import time
+
 import mysql.connector
 
 class Login:
@@ -12,10 +14,11 @@ class Login:
         self.loginlar = []
         self.parollar = []
         self.tekshirish()
-    def tizimga_kirish(self):
+    def tizim(self):
+        self.tekshirish()
         self.cls()
         self.ishora()
-        lis = ['1', '2', '3', '4', '5']
+        lis = ['1', '2', '3', '4']
         inp = input(">>> ").strip()
         while inp not in lis:
             self.cls()
@@ -27,11 +30,28 @@ class Login:
         elif inp == lis[1]:
             self.log_in()
         elif inp == lis[2]:
+            self.log_out()
+        else:
+            self.del_chang()
+
+    def del_chang(self):
+        self.tekshirish()
+        self.cls()
+        self.ishora2()
+        ops = ['1', '2', '3']
+        inpnum = input(">>>")
+        while inpnum not in ops:
+            self.cls()
+            self.ishora2()
+            print("Xato!!!")
+            inpnum = input(">>>")
+        if inpnum == ops[0]:
             self.chage_login()
-        elif inp == lis[3]:
+        elif inpnum == ops[1]:
             self.delete_login()
         else:
-            self.log_out()
+            self.tizim()
+
     def registratsiya(self):
         self.cls()
         ism = input("Ism: ").strip().lower()
@@ -72,6 +92,7 @@ class Login:
         mydb.commit()
         self.cls()
         print("Tizimga hush kelibsiz!")
+        self.del_chang()
     def log_in(self):
         self.cls()
         log = input("Login: ").strip().lower()
@@ -91,6 +112,7 @@ class Login:
             parol = input("Parol: ").strip().lower()
         self.cls()
         print("Tizimga hush kelibsiz!")
+        self.del_chang()
     def chage_login(self):
         self.cls()
         log = input("Login: ").strip().lower()
@@ -127,9 +149,11 @@ class Login:
         my_db.commit()
         self.cls()
         print("Login muvofaqiyatli yangiladi!")
+        self.tizim()
     def log_out(self):
         self.cls()
         print("Tizimdan chiqdingiz!")
+        time.sleep(3)
         exit()
     def delete_login(self):
         self.cls()
@@ -155,6 +179,8 @@ class Login:
         my_db.commit()
         input("Enter")
         print("Login o'chirildi!")
+        time.sleep(3)
+        self.tizim()
     def tekshirish(self):
         mydb = self.database()
         mycursor = mydb.cursor()
@@ -180,14 +206,24 @@ class Login:
              Register         [1]  
             ----------------------
              Login            [2]  
+            ---------------------- 
+             Log out          [3]  
             ----------------------
-             Change Login     [3]  
-            ----------------------
-             Delete login     [4]
-            ----------------------
-             Log out          [5]  
-            ----------------------
+             Boshqa ↪         [4]
+             
         """)
+    @staticmethod
+    def ishora2():
+        print("""
+                 ---A M D---                         
+            ----------------------
+             Change Login     [1]  
+            ----------------------
+             Delete login     [2]
+            ----------------------
+                       ↩ back [3]      
+        """)
+
     @staticmethod
     def emty_str(str_):
         return not bool(str_)
@@ -195,7 +231,7 @@ class Login:
     def cls():
         os.system("clear")
 obyekt = Login()
-obyekt.tizimga_kirish()
+obyekt.tizim()
 
 
 
